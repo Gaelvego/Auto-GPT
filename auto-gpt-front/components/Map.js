@@ -41,17 +41,17 @@ const Map = ({ data, onTechnologyClick }) => {
       .on("mouseout", function() { d3.select(this).attr("stroke", null); })
       //.on("click", (event, d) => focus !== d && (zoom(event, d), event.stopPropagation()))
       .on("click", (event, d) => {
-        if (!d.children) {
+        if (!d.children && d == focus) {
             //setClickedTechnology(d.data.name);  
             onTechnologyClick(d.data.name);          
         } else {
-          zoom(event, d);
+            zoom(event, d);
         }
         event.stopPropagation();
       });
 
     const label = svg.append("g")
-      .style("font", "20px sans-serif")
+      .style("font", "30px sans-serif")
       .attr("pointer-events", "none")
       .attr("text-anchor", "middle")
       .selectAll("text")
@@ -72,27 +72,12 @@ const Map = ({ data, onTechnologyClick }) => {
 
       view = v;
 
-      /*label.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
-      node.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
-      node.attr("r", d => d.r * k);*/
-
       label.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`)
 
         node.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`)
             .style("fill", d => d.depth === 1 ? "solid color" : color(d.depth))
             .attr("r", d => d.r * k);
 
-        // Reveal the children nodes when zoomed into
-        /*if (focus.depth > 1) {
-        node.filter(d => d.parent === focus)
-            .transition()
-            .duration(750)
-            .attr("r", d => d.r * k);
-        } else {
-        node.transition()
-            .duration(750)
-            .attr("r", d => d.r * k);
-        }*/
     }
 
     function zoom(event, d) {
@@ -103,6 +88,7 @@ const Map = ({ data, onTechnologyClick }) => {
         const isDirectParent = clickedNode.children && clickedNode.children.includes(currNode);
 
         if (isDirectChild || isDirectParent){
+
             const focus0 = focus;
 
             focus = d;
@@ -120,6 +106,7 @@ const Map = ({ data, onTechnologyClick }) => {
                 .style("fill-opacity", d => d.parent === focus ? 1 : 0)
                 .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
                 .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+            
     }}
   }, []);
 
