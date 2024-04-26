@@ -1,12 +1,16 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState} from 'react';
 import * as d3 from 'd3';
+import TechWindow from './TechWindow';
 
-const Map = ({ data }) => {
+const Map = ({ data, onTechnologyClick }) => {
   const svgRef = useRef(null);
+  const [clickedTechnology, setClickedTechnology] = useState(null);
+
 
   useEffect(() => {
     const width = 658;
     const height = width;
+    
 
     const color = d3.scaleLinear()
       .domain([0, 5])
@@ -32,16 +36,17 @@ const Map = ({ data }) => {
       .data(root.descendants().slice(1))
       .join("circle")
       .attr("fill", d => d.children ? color(d.depth) : "white")
-      .attr("pointer-events", d => !d.children ? "none" : null)
+      .attr("pointer-events", d => !d.children ? null : null)
       .on("mouseover", function() { d3.select(this).attr("stroke", "#000"); })
       .on("mouseout", function() { d3.select(this).attr("stroke", null); })
+      //.on("click", (event, d) => focus !== d && (zoom(event, d), event.stopPropagation()))
       .on("click", (event, d) => {
         if (!d.children) {
-          // Execute your click handler logic for end nodes
-          console.log("Clicked on end node:", d.data.name);
-          // Add your custom logic here, such as opening a popup or navigating to a details page
+            //setClickedTechnology(d.data.name);  
+            onTechnologyClick(d.data.name);          
+        } else {
+          zoom(event, d);
         }
-        // Prevent event propagation to parent nodes
         event.stopPropagation();
       });
 
@@ -52,6 +57,7 @@ const Map = ({ data }) => {
       .selectAll("text")
       .data(root.descendants())
       .join("text")
+        
       .style("fill-opacity", d => d.parent === root ? 1 : 0)
       .style("display", d => d.parent === root ? "inline" : "none")
       .text(d => d.data.name);
@@ -66,31 +72,56 @@ const Map = ({ data }) => {
 
       view = v;
 
-      label.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
+      /*label.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
       node.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`);
-      node.attr("r", d => d.r * k);
+      node.attr("r", d => d.r * k);*/
+
+      label.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`)
+
+        node.attr("transform", d => `translate(${(d.x - v[0]) * k},${(d.y - v[1]) * k})`)
+            .style("fill", d => d.depth === 1 ? "solid color" : color(d.depth))
+            .attr("r", d => d.r * k);
+
+        // Reveal the children nodes when zoomed into
+        /*if (focus.depth > 1) {
+        node.filter(d => d.parent === focus)
+            .transition()
+            .duration(750)
+            .attr("r", d => d.r * k);
+        } else {
+        node.transition()
+            .duration(750)
+            .attr("r", d => d.r * k);
+        }*/
     }
 
     function zoom(event, d) {
-      const focus0 = focus;
+        const clickedNode = d;
+        const currNode = focus;
 
-      focus = d;
+        const isDirectChild = currNode.children && currNode.children.includes(clickedNode);
+        const isDirectParent = clickedNode.children && clickedNode.children.includes(currNode);
 
-      const transition = svg.transition()
-        .duration(event.altKey ? 7500 : 750)
-        .tween("zoom", d => {
-          const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
-          return t => zoomTo(i(t));
-        });
+        if (isDirectChild || isDirectParent){
+            const focus0 = focus;
 
-      label
-        .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
-        .transition(transition)
-        .style("fill-opacity", d => d.parent === focus ? 1 : 0)
-        .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
-        .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
-    }
-  }, [data]);
+            focus = d;
+
+            const transition = svg.transition()
+                .duration(event.altKey ? 7500 : 750)
+                .tween("zoom", d => {
+                const i = d3.interpolateZoom(view, [focus.x, focus.y, focus.r * 2]);
+                return t => zoomTo(i(t));
+                });
+
+            label
+                .filter(function(d) { return d.parent === focus || this.style.display === "inline"; })
+                .transition(transition)
+                .style("fill-opacity", d => d.parent === focus ? 1 : 0)
+                .on("start", function(d) { if (d.parent === focus) this.style.display = "inline"; })
+                .on("end", function(d) { if (d.parent !== focus) this.style.display = "none"; });
+    }}
+  }, []);
 
   return <svg ref={svgRef}></svg>;
 };

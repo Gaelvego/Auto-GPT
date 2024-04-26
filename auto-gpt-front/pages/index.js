@@ -3,9 +3,22 @@ import Head from 'next/head';
 import Link from 'next/link';
 import '/app/globals.css'
 import Map from "@/components/Map";
+import TechWindow from "@/components/TechWindow";
+import { useState } from "react";
 
 
 const HomePage = () => {
+  const [clickedTechnology, setClickedTechnology] = useState(null);
+  const [popupOpen, setPopupOpen] = useState(false);
+
+  const handleTechnologyClick = (technology) => {
+    setClickedTechnology(technology);
+    setPopupOpen(true);
+  };
+
+  const handlePopupClose = () => {
+    setPopupOpen(false);
+  };
 
   const data = {
     name: 'root',
@@ -64,144 +77,326 @@ const HomePage = () => {
         ]
       },
       {
-        name: 'Image',
+        name: 'Text',
         children: [
-          // Similar structure for Image content type...
+          {
+            name: 'Developer Tools',
+            children: [
+              { name: 'License', children: [
+                {name: 'ChatGPT', value: 1},
+                {name: 'Interax AI', value: 1}] },
+              { name: 'Open Source', children: [
+                {name: 'Databricks', value: 1},
+                {name: 'ColossalAI', value: 1},
+                {name: 'LlamaIndex', value: 1},
+                {name: 'LangChain', value: 1},
+              ] }
+            ]
+          },
+          {
+            name: 'MKT - Content Creation',
+            children: [
+              { name: 'License', children: [
+                {name: 'Copy AI', value: 1}, 
+                {name: 'LLaMA', value: 1}, 
+                {name: 'Twig', value: 1}, 
+                {name: 'Cowriter AI', value: 1}, 
+                {name: 'Decktopus AI', value: 1},
+                {name: 'Wordtune', value: 1},
+                {name: 'WriteSonic', value: 1},
+                {name: 'Typli AI', value: 1},
+                {name: 'WebCopilot', value: 1},
+                {name: 'HiveMind AI', value: 1},
+                {name: 'Jasper', value: 1}
+              ]},
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          {
+            name: 'People Ops - Performance Management',
+            children: [
+              { name: 'License', children: [{name: 'Fireflies', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          {
+            name: 'General Purpose',
+            children: [
+              { name: 'License', children: [{name: 'Notion AI', value: 1},{name: 'Rationale', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          // Other primary enterprise categories for Text content type...
         ]
       },
       {
-        name: 'Vector Database',
+        name: 'Text',
         children: [
           {
-            name: 'Development - Code Writing',
+            name: 'Developer Tools',
             children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
+              { name: 'License', children: [
+                {name: 'ChatGPT', value: 1},
+                {name: 'Interax AI', value: 1}] },
+              { name: 'Open Source', children: [
+                {name: 'Databricks', value: 1},
+                {name: 'ColossalAI', value: 1},
+                {name: 'LlamaIndex', value: 1},
+                {name: 'LangChain', value: 1},
+              ] }
             ]
           },
           {
-            name: 'Marketing - Content Generation',
+            name: 'MKT - Content Creation',
             children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
+              { name: 'License', children: [
+                {name: 'Copy AI', value: 1}, 
+                {name: 'LLaMA', value: 1}, 
+                {name: 'Twig', value: 1}, 
+                {name: 'Cowriter AI', value: 1}, 
+                {name: 'Decktopus AI', value: 1},
+                {name: 'Wordtune', value: 1},
+                {name: 'WriteSonic', value: 1},
+                {name: 'Typli AI', value: 1},
+                {name: 'WebCopilot', value: 1},
+                {name: 'HiveMind AI', value: 1},
+                {name: 'Jasper', value: 1}
+              ]},
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
             ]
           },
+          {
+            name: 'People Ops - Performance Management',
+            children: [
+              { name: 'License', children: [{name: 'Fireflies', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          {
+            name: 'General Purpose',
+            children: [
+              { name: 'License', children: [{name: 'Notion AI', value: 1},{name: 'Rationale', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          // Other primary enterprise categories for Text content type...
         ]
       },
       {
-        name: 'Game & Virtual World',
+        name: 'Text',
         children: [
           {
-            name: 'Development - Code Writing',
+            name: 'Developer Tools',
             children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
+              { name: 'License', children: [
+                {name: 'ChatGPT', value: 1},
+                {name: 'Interax AI', value: 1}] },
+              { name: 'Open Source', children: [
+                {name: 'Databricks', value: 1},
+                {name: 'ColossalAI', value: 1},
+                {name: 'LlamaIndex', value: 1},
+                {name: 'LangChain', value: 1},
+              ] }
             ]
           },
           {
-            name: 'Marketing - Content Generation',
+            name: 'MKT - Content Creation',
             children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
+              { name: 'License', children: [
+                {name: 'Copy AI', value: 1}, 
+                {name: 'LLaMA', value: 1}, 
+                {name: 'Twig', value: 1}, 
+                {name: 'Cowriter AI', value: 1}, 
+                {name: 'Decktopus AI', value: 1},
+                {name: 'Wordtune', value: 1},
+                {name: 'WriteSonic', value: 1},
+                {name: 'Typli AI', value: 1},
+                {name: 'WebCopilot', value: 1},
+                {name: 'HiveMind AI', value: 1},
+                {name: 'Jasper', value: 1}
+              ]},
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
             ]
           },
+          {
+            name: 'People Ops - Performance Management',
+            children: [
+              { name: 'License', children: [{name: 'Fireflies', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          {
+            name: 'General Purpose',
+            children: [
+              { name: 'License', children: [{name: 'Notion AI', value: 1},{name: 'Rationale', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          // Other primary enterprise categories for Text content type...
         ]
       },
       {
-        name: 'Video',
+        name: 'Text',
         children: [
           {
-            name: 'Development - Code Writing',
+            name: 'Developer Tools',
             children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
+              { name: 'License', children: [
+                {name: 'ChatGPT', value: 1},
+                {name: 'Interax AI', value: 1}] },
+              { name: 'Open Source', children: [
+                {name: 'Databricks', value: 1},
+                {name: 'ColossalAI', value: 1},
+                {name: 'LlamaIndex', value: 1},
+                {name: 'LangChain', value: 1},
+              ] }
             ]
           },
           {
-            name: 'Marketing - Content Generation',
+            name: 'MKT - Content Creation',
             children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
+              { name: 'License', children: [
+                {name: 'Copy AI', value: 1}, 
+                {name: 'LLaMA', value: 1}, 
+                {name: 'Twig', value: 1}, 
+                {name: 'Cowriter AI', value: 1}, 
+                {name: 'Decktopus AI', value: 1},
+                {name: 'Wordtune', value: 1},
+                {name: 'WriteSonic', value: 1},
+                {name: 'Typli AI', value: 1},
+                {name: 'WebCopilot', value: 1},
+                {name: 'HiveMind AI', value: 1},
+                {name: 'Jasper', value: 1}
+              ]},
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
             ]
           },
+          {
+            name: 'People Ops - Performance Management',
+            children: [
+              { name: 'License', children: [{name: 'Fireflies', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          {
+            name: 'General Purpose',
+            children: [
+              { name: 'License', children: [{name: 'Notion AI', value: 1},{name: 'Rationale', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          // Other primary enterprise categories for Text content type...
         ]
       },
       {
-        name: 'Music & Sound',
+        name: 'Text',
         children: [
           {
-            name: 'Development - Code Writing',
+            name: 'Developer Tools',
             children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
+              { name: 'License', children: [
+                {name: 'ChatGPT', value: 1},
+                {name: 'Interax AI', value: 1}] },
+              { name: 'Open Source', children: [
+                {name: 'Databricks', value: 1},
+                {name: 'ColossalAI', value: 1},
+                {name: 'LlamaIndex', value: 1},
+                {name: 'LangChain', value: 1},
+              ] }
             ]
           },
           {
-            name: 'Marketing - Content Generation',
+            name: 'MKT - Content Creation',
             children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
+              { name: 'License', children: [
+                {name: 'Copy AI', value: 1}, 
+                {name: 'LLaMA', value: 1}, 
+                {name: 'Twig', value: 1}, 
+                {name: 'Cowriter AI', value: 1}, 
+                {name: 'Decktopus AI', value: 1},
+                {name: 'Wordtune', value: 1},
+                {name: 'WriteSonic', value: 1},
+                {name: 'Typli AI', value: 1},
+                {name: 'WebCopilot', value: 1},
+                {name: 'HiveMind AI', value: 1},
+                {name: 'Jasper', value: 1}
+              ]},
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
             ]
           },
+          {
+            name: 'People Ops - Performance Management',
+            children: [
+              { name: 'License', children: [{name: 'Fireflies', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          {
+            name: 'General Purpose',
+            children: [
+              { name: 'License', children: [{name: 'Notion AI', value: 1},{name: 'Rationale', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          // Other primary enterprise categories for Text content type...
         ]
       },
       {
-        name: 'code Generator Review',
+        name: 'Text',
         children: [
           {
-            name: 'Development - Code Writing',
+            name: 'Developer Tools',
             children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
+              { name: 'License', children: [
+                {name: 'ChatGPT', value: 1},
+                {name: 'Interax AI', value: 1}] },
+              { name: 'Open Source', children: [
+                {name: 'Databricks', value: 1},
+                {name: 'ColossalAI', value: 1},
+                {name: 'LlamaIndex', value: 1},
+                {name: 'LangChain', value: 1},
+              ] }
             ]
           },
           {
-            name: 'Marketing - Content Generation',
+            name: 'MKT - Content Creation',
             children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
+              { name: 'License', children: [
+                {name: 'Copy AI', value: 1}, 
+                {name: 'LLaMA', value: 1}, 
+                {name: 'Twig', value: 1}, 
+                {name: 'Cowriter AI', value: 1}, 
+                {name: 'Decktopus AI', value: 1},
+                {name: 'Wordtune', value: 1},
+                {name: 'WriteSonic', value: 1},
+                {name: 'Typli AI', value: 1},
+                {name: 'WebCopilot', value: 1},
+                {name: 'HiveMind AI', value: 1},
+                {name: 'Jasper', value: 1}
+              ]},
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
             ]
           },
+          {
+            name: 'People Ops - Performance Management',
+            children: [
+              { name: 'License', children: [{name: 'Fireflies', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          {
+            name: 'General Purpose',
+            children: [
+              { name: 'License', children: [{name: 'Notion AI', value: 1},{name: 'Rationale', value: 1}] },
+              { name: 'Open Source', children: [{name: 'N/A', value: 1}] }
+            ]
+          },
+          // Other primary enterprise categories for Text content type...
         ]
       },
-      {
-        name: 'Data & Simulation',
-        children: [
-          {
-            name: 'Development - Code Writing',
-            children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
-            ]
-          },
-          {
-            name: 'Marketing - Content Generation',
-            children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
-            ]
-          },
-        ]
-      },
-      {
-        name: 'Text, Images, Speech & More',
-        children: [
-          {
-            name: 'Development - Code Writing',
-            children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
-            ]
-          },
-          {
-            name: 'Marketing - Content Generation',
-            children: [
-              { name: 'License', children: [/* Technologies with license */] },
-              { name: 'Open Source', children: [/* Technologies with open source */] }
-            ]
-          },
-        ]
-      },]}
+
+    
+    ]}
     ]
   };
   
@@ -224,8 +419,10 @@ const HomePage = () => {
             className="p-2 rounded-full border-2 border-red-500 outline-none bg-black text-white w-full"
           />
         </div>
+        
         <div className="p-8">
-          <Map data={data}/>
+          <Map onTechnologyClick={handleTechnologyClick} data={data}/>
+          {popupOpen && <TechWindow technology={clickedTechnology} onClose={handlePopupClose}/>}
         </div>
       </main>
 
