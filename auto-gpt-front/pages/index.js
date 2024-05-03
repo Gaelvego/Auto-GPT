@@ -4,21 +4,80 @@ import Link from 'next/link';
 import '/app/globals.css'
 import Map from "@/components/Map";
 import TechWindow from "@/components/TechWindow";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import axios from 'axios';
+import processData from "@/components/DataProcessing";
 
 
 const HomePage = () => {
   const [clickedTechnology, setClickedTechnology] = useState(null);
   const [popupOpen, setPopupOpen] = useState(false);
+  const [technologies, setTechnologies] = useState(null);
+  const [mapData, setMapData] = useState(null);
+  const baseURL = "http://localhost:4001"
+
 
   const handleTechnologyClick = (technology) => {
     setClickedTechnology(technology);
     setPopupOpen(true);
   };
 
+  useEffect(() => {
+    const fetchData = async () => {
+        try {
+            const response = await axios.get(`${baseURL}/ais`);
+            console.log(response.data);
+            setTechnologies(response.data);
+            setMapData(processData(response.data));
+
+        } catch (error) {
+            console.log("error fetching data")
+        }
+    };
+    fetchData();
+  }, []); 
+
+
+
   const handlePopupClose = () => {
     setPopupOpen(false);
   };
+
+  const dataa = {
+    name: "root",
+    children: [
+        {
+            name: "Type3",
+            children: [
+                {
+                    name: "Category1",
+                    children: [
+                        {
+                            name: "AI1",
+                            value: 1
+                        },{
+                          name: "A1",
+                          value: 1
+                      },
+                    ]
+                },
+                {
+                    name: "Category2",
+                    children: [{name: 'Fireflies', value: 1}]
+                },
+                {
+                    name: "Category3",
+                    children: [
+                        {
+                            name: "AI3",
+                            value: 1
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}
 
   const data = {
     name: 'root',
@@ -421,7 +480,7 @@ const HomePage = () => {
         </div>
         
         <div className="p-8">
-          <Map onTechnologyClick={handleTechnologyClick} data={data}/>
+          {mapData && <Map onTechnologyClick={handleTechnologyClick} data={mapData}/>}
           {popupOpen && <TechWindow technology={clickedTechnology} onClose={handlePopupClose}/>}
         </div>
       </main>
